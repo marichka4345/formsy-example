@@ -50,15 +50,18 @@ class Autocomplete extends Component {
     render() {
         const {
             autocompleteType,
-            getErrorMessage,
+            getErrorMessage, validationError,
             renderError,
-            isValid
+            isValid, isPristine
         } = this.props;
+
+        const shouldDisplayError = !isValid() && !isPristine();
+        const error = getErrorMessage() || validationError;
 
         return (
           <FormControl
             fullWidth
-            error={!isValid()}
+            error={shouldDisplayError}
           >
               <NoSsr>
                   <Select
@@ -71,7 +74,7 @@ class Autocomplete extends Component {
                   />
               </NoSsr>
 
-              {renderError(getErrorMessage())}
+              {shouldDisplayError && renderError(error)}
           </FormControl>
         );
     }
@@ -80,7 +83,8 @@ class Autocomplete extends Component {
 Autocomplete.propTypes = {
     ...propTypes,
     autocompleteType: PropTypes.string,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired
 };
 
 Autocomplete.defaultProps = {

@@ -6,16 +6,21 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 
-const Dropdown = ({name, isValid, getValue, setValue, getErrorMessage, options, renderError}) => {
-    const changeValue = e => {
-        setValue(e.target.value);
-    };
+const Dropdown = ({name, options, renderError, ...controlProps}) => {
+    const {
+        getValue, setValue,
+        validationError, getErrorMessage,
+        isValid, isPristine
+    } = controlProps;
+
+    const shouldDisplayError = !isValid() && !isPristine();
+    const error = getErrorMessage() || validationError;
 
     return (
-      <FormControl error={!isValid()}>
+      <FormControl error={shouldDisplayError}>
           <InputLabel>{name}</InputLabel>
 
-          <Select value={getValue()} onChange={changeValue}>
+          <Select value={getValue()} onChange={e => setValue(e.target.value)}>
               {
                   options.map(({id, value}) => (
                     <MenuItem key={id} value={id}>{value}</MenuItem>
@@ -23,7 +28,7 @@ const Dropdown = ({name, isValid, getValue, setValue, getErrorMessage, options, 
               }
           </Select>
 
-          {renderError(getErrorMessage())}
+          {shouldDisplayError && renderError(error)}
       </FormControl>
     );
 };
@@ -31,6 +36,7 @@ const Dropdown = ({name, isValid, getValue, setValue, getErrorMessage, options, 
 Dropdown.propTypes = {
     options: PropTypes.array.isRequired,
     renderError: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
     ...propTypes
 };
 

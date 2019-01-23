@@ -3,28 +3,34 @@ import PropTypes from 'prop-types';
 import {withFormsy, propTypes} from 'formsy-react';
 import TextField from '@material-ui/core/TextField/TextField';
 
-const TextInput = ({name, getValue, getErrorMessage, setValue, isValid, renderError}) => {
-    const changeValue = e => {
-        setValue(e.target.value);
-    };
+const TextInput = ({name, renderError, ...controlProps}) => {
+    const {
+        getValue, setValue,
+        validationError, getErrorMessage,
+        isValid, isPristine
+    } = controlProps;
+
+    const shouldDisplayError = !isValid() && !isPristine();
+    const error = getErrorMessage() || validationError;
 
     return (
       <Fragment>
           <TextField
-            error={!isValid()}
+            error={shouldDisplayError}
             label={name}
             value={getValue()}
-            onChange={changeValue}
+            onChange={e => setValue(e.target.value)}
           />
 
-          {renderError(getErrorMessage())}
+          {shouldDisplayError && renderError(error)}
       </Fragment>
     );
 };
 
 TextInput.propTypes = {
     ...propTypes,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired
 };
 
 export default withFormsy(TextInput);

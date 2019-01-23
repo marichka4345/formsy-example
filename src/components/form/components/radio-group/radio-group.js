@@ -7,7 +7,9 @@ import MuiRadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import {withFormsy, propTypes} from 'formsy-react';
 
-const RadioGroup = ({name, groupName, options, getValue, renderError, getErrorMessage, setValue}) => {
+const RadioGroup = ({name, groupName, options, renderError, ...controlProps}) => {
+    const {getErrorMessage, getValue, setValue} = controlProps;
+
     return (
       <FormControl>
           <FormLabel>{groupName}</FormLabel>
@@ -33,7 +35,8 @@ RadioGroup.propTypes = {
     ...propTypes,
     groupName: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired
 };
 
 export default withFormsy(RadioGroup);

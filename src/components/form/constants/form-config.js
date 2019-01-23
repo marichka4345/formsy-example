@@ -62,8 +62,9 @@ export const VALIDATION = {
             maxLength: 'Text1 should have maximum 100 symbols',
             matchRegexp: 'Text1 should not have special symbols at start/end'
         },
+        required: true,
         value: '',
-        errorMessage: 'Text1 is required'
+        validationError: 'Text1 is required'
     },
     [FIELDS.TEXT2]: {
         validations: {
@@ -73,18 +74,21 @@ export const VALIDATION = {
             equalsField: 'Text2 should match text1'
         },
         value: '',
-        errorMessage: 'Text2 is required'
+        required: true,
+        validationError: 'Text2 is required'
     },
     [FIELDS.DROPDOWN1]: {
         value: '',
-        errorMessage: 'Dropdown1 is required'
+        required: true,
+        validationError: 'Dropdown1 is required'
     },
     [FIELDS.DROPDOWN2]: {
         value: OPTIONS[0].id
     },
     [FIELDS.AUTOCOMPLETE1]: {
         value: '',
-        errorMessage: 'Autocomplete1 is required'
+        required: true,
+        validationError: 'Autocomplete1 is required'
     },
     [FIELDS.AUTOCOMPLETE2]: {
         validations: {
@@ -95,8 +99,7 @@ export const VALIDATION = {
             minLength: 'You should choose at least 2 values',
             maxLength: 'You should choose maximum 5 values'
         },
-        value: [],
-        errorMessage: 'Autocomplete2 is required'
+        value: []
     },
     [FIELDS.SWITCH]: {
         value: false
@@ -114,6 +117,7 @@ export const VALIDATION = {
     },
     [FIELDS.RADIOGROUP1]: {
         value: '',
-        errorMessage: 'You should choose one option'
+        required: true,
+        validationError: 'You should choose one option'
     }
 };

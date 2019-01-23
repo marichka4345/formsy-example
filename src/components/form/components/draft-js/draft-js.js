@@ -72,13 +72,16 @@ class DraftJs extends Component {
     };
 
     render() {
-        const {name, getValue, isValid, getErrorMessage, renderError} = this.props;
+        const {name, getValue, isValid, getErrorMessage, validationError, renderError} = this.props;
 
-        const errorClass = !isValid() ? styles.error : '';
+        const shouldDisplayError = !isValid();
+        const error = getErrorMessage() || validationError;
+
+        const errorClass = shouldDisplayError ? styles.error : '';
 
         return (
           <Fragment>
-              {renderError(getErrorMessage())}
+              {shouldDisplayError && renderError(error)}
 
               <div
                 className={`${styles.editor} ${errorClass}`}
@@ -104,7 +107,8 @@ class DraftJs extends Component {
 
 DraftJs.propTypes = {
     ...propTypes,
-    renderError: PropTypes.func.isRequired
+    renderError: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
 };
 
 export default withFormsy(DraftJs);
