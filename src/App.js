@@ -3,9 +3,9 @@ import React, { Component, Fragment } from 'react';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 
 import {TestForm} from './components/form/form';
+import {SubmitButtons} from './components/submit-buttons/submit-buttons';
 
 const generateClassName = createGenerateClassName();
 const jss = create({
@@ -14,15 +14,14 @@ const jss = create({
 });
 
 export default class App extends Component {
-    state = {
-        isSubmitting: false
-    };
-
     form = React.createRef();
 
-    submit = e => {
-        e.preventDefault();
+    submit = () => {
+        this.form.current.submit();
+    };
 
+    submitWithoutValidation = () => {
+        alert('Submitted');
         console.log(this.form.current.getModel());
     };
 
@@ -30,15 +29,13 @@ export default class App extends Component {
         return (
           <JssProvider jss={jss} generateClassName={generateClassName}>
               <Fragment>
-                  <TestForm ref={this.form} />
+                  <SubmitButtons
+                    isSubmitting={false}
+                    onSubmit={this.submit}
+                    onSubmitWithoutValidation={this.submitWithoutValidation}
+                  />
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.submit}
-                  >
-                      Save
-                  </Button>
+                  <TestForm ref={this.form} />
               </Fragment>
           </JssProvider>
         );

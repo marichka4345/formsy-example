@@ -8,10 +8,13 @@ import FormControl from '@material-ui/core/FormControl/FormControl';
 import {withFormsy, propTypes} from 'formsy-react';
 
 const RadioGroup = ({name, groupName, options, renderError, ...controlProps}) => {
-    const {getErrorMessage, getValue, setValue} = controlProps;
+    const {getErrorMessage, getValue, setValue, validationError, isValid, isPristine} = controlProps;
+
+    const shouldDisplayError = !isValid() && !isPristine();
+    const error = getErrorMessage() || validationError;
 
     return (
-      <FormControl>
+      <FormControl margin="dense" error={shouldDisplayError}>
           <FormLabel>{groupName}</FormLabel>
           <MuiRadioGroup name={name} value={getValue()} onChange={e => setValue(e.target.value)}>
               {
@@ -26,7 +29,7 @@ const RadioGroup = ({name, groupName, options, renderError, ...controlProps}) =>
               }
           </MuiRadioGroup>
 
-          {renderError(getErrorMessage())}
+          {shouldDisplayError && renderError(error)}
       </FormControl>
     );
 };

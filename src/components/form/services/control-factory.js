@@ -9,7 +9,7 @@ import DraftJs from '../components/draft-js/draft-js';
 import * as CONTROL_TYPE from '../../../constants/control-types';
 import {OPTIONS} from '../../../constants/options';
 
-export const renderControls = (errorClass) => {
+export const renderControls = renderError => {
     return Object.entries(CONFIG.FORM_SCHEMA).map(([name, controlData]) => {
 
         const {
@@ -21,13 +21,9 @@ export const renderControls = (errorClass) => {
         const validations = CONFIG.VALIDATION[name];
 
         const commonProps = {
+            key: name,
             name,
-            renderError(error) {
-                return (
-                  error &&
-                  <div className={errorClass}>{error}</div>
-                );
-            },
+            renderError,
             ...validations
         };
 

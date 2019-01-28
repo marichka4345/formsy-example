@@ -17,7 +17,7 @@ const Dropdown = ({name, options, renderError, ...controlProps}) => {
     const error = getErrorMessage() || validationError;
 
     return (
-      <FormControl error={shouldDisplayError}>
+      <FormControl error={shouldDisplayError} margin="dense">
           <InputLabel>{name}</InputLabel>
 
           <Select value={getValue()} onChange={e => setValue(e.target.value)}>

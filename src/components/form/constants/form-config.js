@@ -1,4 +1,4 @@
-import {EditorState} from 'draft-js';
+import {EditorState, ContentState} from 'draft-js';
 import {addValidationRule} from 'formsy-react';
 
 import * as FIELDS from '../../../constants/form-fields';
@@ -106,14 +106,14 @@ export const VALIDATION = {
     },
     [FIELDS.DRAFTJS]: {
         validations: {
-            minDraft: 5,
+            minDraft: 4,
             maxDraft: 100
         },
         validationErrors: {
             minDraft: 'You should enter minimum 5 symbols',
             maxDraft: 'You should enter less than 100 symbols'
         },
-        value: EditorState.createEmpty()
+        value: EditorState.createWithContent(ContentState.createFromText(''))
     },
     [FIELDS.RADIOGROUP1]: {
         value: '',

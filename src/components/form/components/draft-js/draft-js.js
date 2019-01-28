@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import {withFormsy, propTypes} from 'formsy-react';
 import * as TEXT_STYLE from './constants/text-styles';
 import {TOOLBAR_ICONS} from './constants/draft-js-toolbar';
+import {getDraftText} from '../../../../services/helpers';
 import 'draft-js/dist/Draft.css';
 import styles from './draft-js.module.css';
 
@@ -25,9 +26,11 @@ class DraftJs extends Component {
     };
 
     onChange = editorState => {
-        const {setValue} = this.props;
+        const {getValue, setValue} = this.props;
 
-        setValue(editorState);
+        if (getDraftText(editorState) !== getDraftText(getValue())) {
+            setValue(editorState);
+        }
     };
 
     onStyleBtnClick = e => {
@@ -72,9 +75,14 @@ class DraftJs extends Component {
     };
 
     render() {
-        const {name, getValue, isValid, getErrorMessage, validationError, renderError} = this.props;
+        const {
+            name, getValue,
+            isValid, isPristine,
+            getErrorMessage,
+            validationError, renderError
+        } = this.props;
 
-        const shouldDisplayError = !isValid();
+        const shouldDisplayError = !isValid() && !isPristine();
         const error = getErrorMessage() || validationError;
 
         const errorClass = shouldDisplayError ? styles.error : '';

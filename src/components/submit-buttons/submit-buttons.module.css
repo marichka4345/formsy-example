@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt {
+  max-width: 300px;
+  font-size: .7em;
+  margin: 5px auto 20px;
+  text-align: center;
+}

@@ -4,6 +4,7 @@ import Select from 'react-select';
 import {withFormsy, propTypes} from 'formsy-react';
 import NoSsr from '@material-ui/core/NoSsr';
 import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import Chip from '@material-ui/core/Chip';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {AUTOCOMPLETE_TYPE} from '../../../../constants/autocomplete-types';
@@ -25,6 +26,13 @@ function MultiValue(props) {
 const components = {
     MultiValue
 };
+
+const getSelectErrorStyle = hasError => ({
+    control: provided => ({
+        ...provided,
+        borderColor: hasError ? 'red' : '#ccc'
+    })
+});
 
 class Autocomplete extends Component {
     state = {
@@ -52,7 +60,8 @@ class Autocomplete extends Component {
             autocompleteType,
             getErrorMessage, validationError,
             renderError,
-            isValid, isPristine
+            isValid, isPristine,
+            name
         } = this.props;
 
         const shouldDisplayError = !isValid() && !isPristine();
@@ -61,10 +70,13 @@ class Autocomplete extends Component {
         return (
           <FormControl
             fullWidth
+            margin="dense"
             error={shouldDisplayError}
           >
+              <FormLabel>{name}</FormLabel>
               <NoSsr>
                   <Select
+                    styles={getSelectErrorStyle(shouldDisplayError)}
                     options={options}
                     placeholder="Search a value"
                     value={this.state.selectedOption}
