@@ -6,6 +6,7 @@ import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 
 import {TestForm} from './components/form/form';
 import {SubmitButtons} from './components/submit-buttons/submit-buttons';
+import {getServerResponse} from './services/helpers';
 
 const generateClassName = createGenerateClassName();
 const jss = create({
@@ -14,15 +15,31 @@ const jss = create({
 });
 
 export default class App extends Component {
+    state = {
+        isSubmitting: false
+    };
+
     form = React.createRef();
+
+    componentDidMount() {
+        console.log('Initialized with ', this.form.current.getModel());
+    }
+
+    changeIsSubmitting = isSubmitting => {
+        this.setState({isSubmitting});
+    };
 
     submit = () => {
         this.form.current.submit();
     };
 
-    submitWithoutValidation = () => {
-        alert('Submitted');
-        console.log(this.form.current.getModel());
+    submitWithoutValidation = async () => {
+        this.changeIsSubmitting(true);
+
+        const response = await getServerResponse(this.form.current.getModel());
+        console.log('Submitted with ', response);
+
+        this.changeIsSubmitting(false);
     };
 
     render() {
@@ -30,12 +47,12 @@ export default class App extends Component {
           <JssProvider jss={jss} generateClassName={generateClassName}>
               <Fragment>
                   <SubmitButtons
-                    isSubmitting={false}
+                    isSubmitting={this.state.isSubmitting}
                     onSubmit={this.submit}
                     onSubmitWithoutValidation={this.submitWithoutValidation}
                   />
 
-                  <TestForm ref={this.form} />
+                  <TestForm ref={this.form} changeIsSubmitting={this.changeIsSubmitting} />
               </Fragment>
           </JssProvider>
         );

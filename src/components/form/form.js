@@ -1,7 +1,7 @@
 import React from 'react';
 import Formsy from 'formsy-react';
 import {renderControls} from './services/control-factory';
-import {getServerError} from '../../services/helpers';
+import {getServerError, getServerResponse} from '../../services/helpers';
 import {TEXT1} from '../../constants/form-fields';
 import styles from './form.module.css';
 
@@ -10,17 +10,22 @@ const renderError = error => (
   <div className={styles.error}>{error}</div>
 );
 
-export const TestForm = React.forwardRef((props, ref) => {
+export const TestForm = React.forwardRef(({changeIsSubmitting}, ref) => {
 
     const onValidSubmit = async (data, resetForm, invalidateForm) => {
+        changeIsSubmitting(true);
+
         if (data[TEXT1] !== 'sun') {
-            const errors = await getServerError([TEXT1]);
+            const {errors} = await getServerError([TEXT1]);
             invalidateForm(errors);
+            console.log('Got error ', errors);
+            changeIsSubmitting(false);
             return;
         }
 
-        alert('Submitted');
-        console.log(data);
+        const response = await getServerResponse(data);
+        console.log('Submitted with ', response);
+        changeIsSubmitting(false);
     };
 
     return (
